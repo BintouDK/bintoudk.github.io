@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Certifications Section</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* ============================================================
+       ROOT & RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d0f14;
+      --surface:     #13161d;
+      --card:        #181c26;
+      --border:      #252b3b;
+      --accent:      #4f8ef7;
+      --accent-soft: rgba(79,142,247,.12);
+      --accent2:     #a78bfa;
+      --accent2-soft:rgba(167,139,250,.12);
+      --text:        #e8eaf0;
+      --muted:       #7a8099;
+      --radius:      14px;
+      --transition:  .25s cubic-bezier(.4,0,.2,1);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    /* ============================================================
+       SECTION WRAPPER
+    ============================================================ */
+    .section {
+      width: 100%;
+      max-width: 820px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .section-header h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--text);
+      letter-spacing: -.5px;
+      line-height: 1;
+    }
+
+    .section-header .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    .badge-count {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(79,142,247,.25);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    /* ============================================================
+       TIMELINE
+    ============================================================ */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent2) 100%);
+      border-radius: 2px;
+      opacity: .35;
+    }
+
+    /* ============================================================
+       CERTIFICATION CARD
+    ============================================================ */
+    .cert-item {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 28px 24px;
+      margin-bottom: 24px;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .cert-item:last-child { margin-bottom: 0; }
+
+    .cert-item:hover {
+      border-color: rgba(79,142,247,.4);
+      transform: translateX(4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,.35);
+    }
+
+    /* Timeline dot */
+    .cert-item::before {
+      content: '';
+      position: absolute;
+      left: -35px;
+      top: 30px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(79,142,247,.25);
+      transition: box-shadow var(--transition);
+    }
+
+    .cert-item:nth-child(2)::before { background: var(--accent2); box-shadow: 0 0 0 3px rgba(167,139,250,.25); }
+    .cert-item:hover::before { box-shadow: 0 0 0 6px rgba(79,142,247,.2); }
+
+    /* Card top row */
+    .cert-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .cert-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.5rem;
+    }
+
+    .cert-info { flex: 1; }
+
+    .cert-info h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.25;
+    }
+
+    .cert-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .cert-issuer {
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .cert-date {
+      font-size: .75rem;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2px 9px;
+      border-radius: 20px;
+    }
+
+    .cert-status {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .cert-status.active {
+      color: #34d399;
+      background: rgba(52,211,153,.1);
+      border: 1px solid rgba(52,211,153,.25);
+    }
+
+    /* Description */
+    .cert-desc {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    /* Skills tags */
+    .cert-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 22px;
+    }
+
+    .skill-tag {
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(79,142,247,.2);
+      padding: 4px 11px;
+      border-radius: 6px;
+    }
+
+    .cert-item:nth-child(2) .skill-tag {
+      color: var(--accent2);
+      background: var(--accent2-soft);
+      border-color: rgba(167,139,250,.2);
+    }
+
+    /* ============================================================
+       ACTION BUTTONS
+    ============================================================ */
+    .cert-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .83rem;
+      font-weight: 600;
+      letter-spacing: .03em;
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition:
+        background var(--transition),
+        color var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: white;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .btn:hover::after { opacity: .06; }
+    .btn:active { transform: scale(.97); }
+
+    /* Primary – View Certificate */
+    .btn-cert {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 16px rgba(79,142,247,.3);
+    }
+    .btn-cert:hover {
+      background: #3a7cf0;
+      box-shadow: 0 4px 24px rgba(79,142,247,.45);
+      transform: translateY(-1px);
+    }
+
+    /* Secondary – View Demo */
+    .btn-demo {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-demo:hover {
+      border-color: rgba(79,142,247,.45);
+      color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(79,142,247,.1);
+    }
+
+    /* Meta certification variant colors */
+    .cert-item:nth-child(2) .btn-cert {
+      background: var(--accent2);
+      box-shadow: 0 2px 16px rgba(167,139,250,.3);
+    }
+    .cert-item:nth-child(2) .btn-cert:hover {
+      background: #9b72f5;
+      box-shadow: 0 4px 24px rgba(167,139,250,.45);
+    }
+    .cert-item:nth-child(2) .btn-demo:hover {
+      border-color: rgba(167,139,250,.45);
+      color: var(--accent2);
+      box-shadow: 0 4px 16px rgba(167,139,250,.1);
+    }
+
+    /* Button SVG icons */
+    .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* ============================================================
+       MODAL / LIGHTBOX
+    ============================================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.82);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-box {
+      position: relative;
+      max-width: 700px;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      transform: scale(.88) translateY(20px);
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+      box-shadow: 0 32px 80px rgba(0,0,0,.6);
+    }
+
+    .modal-overlay.open .modal-box {
+      transform: scale(1) translateY(0);
+    }
+
+    /* Modal header */
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .modal-close:hover {
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      transform: rotate(90deg);
+    }
+
+    .modal-close svg { width: 16px; height: 16px; }
+
+    /* Modal image area */
+    .modal-img-wrap {
+      position: relative;
+      background: var(--surface);
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-img-wrap img {
+      width: 100%;
+      max-height: 480px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Placeholder when no real image */
+    .cert-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 60px 40px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .cert-placeholder .cert-seal {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+    }
+
+    .cert-placeholder p {
+      font-size: .88rem;
+      line-height: 1.6;
+      max-width: 280px;
+    }
+
+    .cert-placeholder strong { color: var(--text); }
+
+    /* Modal footer */
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-sm {
+      padding: 7px 15px;
+      font-size: .8rem;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 600px) {
+      .timeline { padding-left: 20px; }
+      .cert-item { padding: 20px 16px 18px; }
+      .cert-item::before { left: -28px; width: 12px; height: 12px; top: 24px; }
+      .cert-top { flex-direction: column; gap: 12px; }
+      .cert-logo { width: 44px; height: 44px; }
+      .cert-actions { flex-direction: column; }
+      .btn { justify-content: center; }
+      .modal-box { border-radius: 14px; }
+    }
+
+    /* ============================================================
+       FOCUS STYLES (accessibility)
+    ============================================================ */
+    .btn:focus-visible,
+    .modal-close:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================================================
+     CERTIFICATIONS SECTION
+================================================================ -->
+<section class="section" aria-label="Certifications">
+
+  <div class="section-header">
+    <h2>Certifications</h2>
+    <div class="line"></div>
+    <span class="badge-count">2 Verified</span>
+  </div>
+
+  <div class="timeline">
+
+    <!-- ── CARD 1 · Microsoft ── -->
+    <article class="cert-item" aria-label="Microsoft Specialiste Word, Excel, PowerPoint Certification">
+      <div class="cert-top">
+        <div class="cert-logo" aria-hidden="true">🪟</div>
+        <div class="cert-info">
+          <h3>Microsoft Specialiste Word, Excel, PowerPoint</h3>
+          <div class="cert-meta">
+            <span class="cert-issuer">Microsoft</span>
+            <span class="cert-date">Issued ·  2024</span>
+            <span class="cert-status active">Active</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="cert-desc">
+        Validates foundational knowledge and skills in Microsoft Office applications,
+         including Word, Excel, and PowerPoint,
+      </p>
+
+      <ul class="cert-skills" aria-label="Skills covered">
+        <li class="skill-tag">Word</li>
+        <li class="skill-tag">Excel</li>
+        <li class="skill-tag">PowerPoint</li>
+        <li class="skill-tag">Document Formatting</li>
+        <li class="skill-tag">Data Analysis</li>
+      </ul>
+
+      <div class="cert-actions">
+        <!-- View Certificate → modal -->
+        <button
+          class="btn btn-cert"
+          aria-label="View Microsoft Specialiste Word, Excel, PowerPoint certificate in popup"
+          data-modal="cert-modal"
+          data-img="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=700&q=80"
+          data-img-alt="Microsoft Specialiste Word, Excel, PowerPoint certificate"
+          data-title="Microsoft Specialiste Word, Excel, PowerPoint Certificate"
+        >
+          <!-- certificate icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4"/>
+            <circle cx="17" cy="17" r="3"/><path d="M19.5 19.5 22 22"/>
+          </svg>
+          View Certificate
+        </button>
+
+        <!-- View Demo → new tab -->
+        <a
+          href="https://learn.microsoft.com/en-us/certifications/microsoft-specialist-word-excel-powerpoint/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-demo"
+          aria-label="View Microsoft Specialiste Word, Excel, PowerPoint certification demo — opens in new tab"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          View Demo
+        </a>
+      </div>
+    </article>
+
+    <!-- ── CARD 2 · Meta ── -->
+    <article class="cert-item" aria-label="Meta Digital Marketing Associate Certification">
+      <div class="cert-top">
+        <div class="cert-logo" aria-hidden="true">🔵</div>
+        <div class="cert-info">
+          <h3>Meta Digital Marketing Associate</h3>
+          <div class="cert-meta">
+            <span class="cert-issuer">Meta · Coursera</span>
+            <span class="cert-date">Issued · Mar 2026</span>
+            <span class="cert-status active">Active</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="cert-desc">
+        Industry-recognised certificate covering the fundamentals of digital marketing,
+         including social media strategy, Brand awareness, content creation, 
+         and campaign management across Meta platforms.
+      </p>
+
+      <ul class="cert-skills" aria-label="Skills covered">
+        <li class="skill-tag">Social Media Strategy</li>
+        <li class="skill-tag">Brand Awareness</li>
+        <li class="skill-tag">Content Creation</li>
+        <li class="skill-tag">Campaign Management</li>
+        <li class="skill-tag">Meta Platforms</li>
+      </ul>
+
+      <div class="cert-actions">
+        <button
+          class="btn btn-cert"
+          aria-label="View Meta Digital Marketing Associate certificate in popup"
+          data-modal="cert-modal"
+          data-img="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=700&q=80"
+          data-img-alt="Meta Digital Marketing Associate Certificate"
+          data-title="Meta Digital Marketing Associate Certificate"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h4"/>
+            <circle cx="17" cy="17" r="3"/><path d="M19.5 19.5 22 22"/>
+          </svg>
+          View Certificate
+        </button>
+
+        <a
+          href="https://www.coursera.org/professional-certificates/meta-digital-marketing-associate"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-demo"
+          aria-label="View Meta Digital Marketing Associate program — opens in new tab"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          View Demo
+        </a>
+      </div>
+    </article>
+
+  </div><!-- /.timeline -->
+</section>
+
+
+<!-- ================================================================
+     CERTIFICATE MODAL
+================================================================ -->
+<div
+  id="cert-modal"
+  class="modal-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+  tabindex="-1"
+>
+  <div class="modal-box" id="modal-box">
+
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Certificate</span>
+      <button class="modal-close" id="modal-close" aria-label="Close certificate popup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-img-wrap" id="modal-img-wrap">
+      <!-- image injected by JS -->
+      <div class="cert-placeholder">
+        <div class="cert-seal">🏅</div>
+        <p><strong>Certificate Preview</strong><br/>Replace the <code>data-img</code> attribute on each button with your real certificate image URL or local path.</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-demo btn-sm" id="modal-close-btn">Close</button>
+      <a class="btn btn-cert btn-sm" id="modal-download" href="#" download aria-label="Download certificate image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download
+      </a>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ================================================================
+     JAVASCRIPT
+================================================================ -->
+<script>
+  /* ────────────────────────────────────────────
+     Modal logic — clean & self-contained
+  ──────────────────────────────────────────── */
+  const modal        = document.getElementById('cert-modal');
+  const modalTitle   = document.getElementById('modal-title');
+  const modalImgWrap = document.getElementById('modal-img-wrap');
+  const modalClose   = document.getElementById('modal-close');
+  const modalCloseBtn= document.getElementById('modal-close-btn');
+  const modalDownload= document.getElementById('modal-download');
+
+  // Elements that had focus before opening (for a11y restore)
+  let previousFocus = null;
+
+  /**
+   * openModal(triggerBtn)
+   * Reads data attributes from the clicked button and
+   * populates + opens the modal.
+   */
+  function openModal(triggerBtn) {
+    const imgSrc  = triggerBtn.getAttribute('data-img');
+    const imgAlt  = triggerBtn.getAttribute('data-img-alt') || 'Certificate image';
+    const title   = triggerBtn.getAttribute('data-title')   || 'Certificate';
+
+    // Update modal content
+    modalTitle.textContent = title;
+
+    if (imgSrc) {
+      modalImgWrap.innerHTML = `
+        <img
+          src="${imgSrc}"
+          alt="${imgAlt}"
+          loading="lazy"
+          onerror="this.parentElement.innerHTML = fallbackHTML()"
+        />`;
+      modalDownload.href = imgSrc;
+      modalDownload.style.display = 'inline-flex';
+    } else {
+      modalImgWrap.innerHTML = fallbackHTML();
+      modalDownload.style.display = 'none';
+    }
+
+    // Open
+    modal.classList.add('open');
+    previousFocus = document.activeElement;
+    modal.focus();
+    document.body.style.overflow = 'hidden';
+  }
+
+  /**
+   * closeModal()
+   * Closes the modal and restores scroll + focus.
+   */
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    if (previousFocus) previousFocus.focus();
+  }
+
+  /**
+   * fallbackHTML()
+   * Returns placeholder markup when no image is available.
+   */
+  function fallbackHTML() {
+    return `
+      <div class="cert-placeholder">
+        <div class="cert-seal">🏅</div>
+        <p><strong>Certificate Preview</strong><br/>
+        Replace the <code>data-img</code> attribute with your real certificate image URL.</p>
+      </div>`;
+  }
+
+  /* ── Event Listeners ── */
+
+  // Open modal when any "View Certificate" button is clicked
+  document.querySelectorAll('[data-modal="cert-modal"]').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn));
+  });
+
+  // Close via X button
+  modalClose.addEventListener('click', closeModal);
+
+  // Close via footer Close button
+  modalCloseBtn.addEventListener('click', closeModal);
+
+  // Close by clicking outside the modal box (on the overlay)
+  modal.addEventListener('click', e => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+
+  // Trap focus inside modal while open
+  modal.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const focusable = modal.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+    }
+  });
+</script>
+
+</body>
+</html>
