@@ -3,7 +3,7 @@
    ───────────────────────────────────────────────────────────
    HOW THIS FILE WORKS:
    1. PORTFOLIO_DATA  →  All your personal info lives here.
-                         Edit ONLY this object to update content.
+                        Edit ONLY this object to update content.
    2. render*()        →  Functions that read the data and
                           build the HTML automatically.
    3. Event listeners  →  Dark mode, hamburger menu,
@@ -12,7 +12,7 @@
 ══════════════════════════════════════════════════════════ */
 
 
-/* ╔══════════════════════════════════════════════════════╗
+/* ╔══════════════════��═══════════════════════════════════╗
    ║                                                      ║
    ║   ✏️  YOUR PERSONAL DATA — EDIT EVERYTHING HERE      ║
    ║                                                      ║
@@ -131,7 +131,7 @@ const PORTFOLIO_DATA = {
       category:    "web",
       desc:        "A responsive personal portfolio website showcasing projects, skills, and contact information.",
       tags:        ["HTML", "CSS", "JavaScript"],
-      emoji:       "�",
+      emoji:       "🌟",
       bannerColor: "#1a0a2e",
       liveUrl:     "#",
       repoUrl:     "#",
@@ -233,15 +233,15 @@ const PORTFOLIO_DATA = {
       title:       "Microsoft Certified: word, Excel, PowerPoint.",
       issuer:      "Microsoft",
       issuerIcon:  "🥈",                // emoji shown in the badge
-      desc:        "Certification demonstrating proficiency in Microsoft Word, Excel, and PowerPoint. Validates skills in document creation, data analysis, and presentation design. Issued by Microsoft.",
+      desc:        "Certification demonstrating proficiency in Microsoft Word, Excel, and PowerPoint. Validates skills in document creation, data analysis, and presentation design. Issued by Microsoft",
       verifyUrl:   "#",                 // ← paste your credential link here
     },
     {
-      date:        "March 202-",
+      date:        "March 2026",
       title:       "Meta certified Digital Marketing Associate",
       issuer:      "Meta",
       issuerIcon:  "🥇",
-      desc:        "CBO certification from Meta, validating foundational digital marketing skills across Facebook, Instagram, and Messenger platforms. Covers campaign creation, audience targeting, and performance analysis.",
+      desc:        "CBO certification from Meta, validating foundational digital marketing skills across Facebook, Instagram, and Messenger platforms. Covers campaign creation, audience targeting, and more.",
       verifyUrl:   "#",
     },
     /* ── HOW TO ADD MORE ──────────────────────────────────
@@ -502,14 +502,18 @@ function renderEducation() {
     modalTitle.textContent = title;
 
     if (imgSrc) {
+      // Resolve image path: if it's a relative path (certif1, certif2, etc.),
+      // keep it as-is; if it's a full URL, use it directly
+      const fullImgPath = imgSrc.startsWith('http') ? imgSrc : imgSrc;
+      
       modalImgWrap.innerHTML = `
         <img
-          src="${imgSrc}"
+          src="${fullImgPath}"
           alt="${imgAlt}"
           loading="lazy"
-          onerror="this.parentElement.innerHTML = fallbackHTML()"
+          onerror="this.parentElement.innerHTML = window.fallbackHTML()"
         />`;
-      modalDownload.href = imgSrc;
+      modalDownload.href = fullImgPath;
       modalDownload.style.display = 'inline-flex';
     } else {
       modalImgWrap.innerHTML = fallbackHTML();
@@ -542,9 +546,12 @@ function renderEducation() {
       <div class="cert-placeholder">
         <div class="cert-seal">🏅</div>
         <p><strong>Certificate Preview</strong><br/>
-        Replace the <code>data-img</code> attribute with your real certificate image URL.</p>
+        Unable to load image. Please check the file path.</p>
       </div>`;
   }
+
+  // Expose fallbackHTML globally for onerror attribute
+  window.fallbackHTML = fallbackHTML;
 
   /* ── Event Listeners ── */
 
