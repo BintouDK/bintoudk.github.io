@@ -3,16 +3,16 @@
    ───────────────────────────────────────────────────────────
    HOW THIS FILE WORKS:
    1. PORTFOLIO_DATA  →  All your personal info lives here.
-                        Edit ONLY this object to update content.
+                         Edit ONLY this object to update content.
    2. render*()        →  Functions that read the data and
-                          build the HTML automatically.
+                           build the HTML automatically.
    3. Event listeners  →  Dark mode, hamburger menu,
-                          project filter, contact form,
-                          scroll animations.
-══════════════════════════════════════════════════════════ */
+                           project filter, contact form,
+                           scroll animations.
+════════════��═════════════════════════════════════════════ */
 
 
-/* ╔══════════════════��═══════════════════════════════════╗
+/* ╔══════════════════════════════════════════════════════╗
    ║                                                      ║
    ║   ✏️  YOUR PERSONAL DATA — EDIT EVERYTHING HERE      ║
    ║                                                      ║
@@ -218,45 +218,26 @@ const PORTFOLIO_DATA = {
    
   ],
 
-
-
-
  /* ──────────── CERTIFICATIONS ──────────── */
   /*
      Add as many objects as you like inside this array.
      Each object = one certification card on the timeline.
-     verifyUrl: paste the credential URL, or use "#" if you don't have one yet.
   */
   certifications: [
     {
-      date:        " 2024",
+      date:        "2024",
       title:       "Microsoft Certified: word, Excel, PowerPoint.",
       issuer:      "Microsoft",
-      issuerIcon:  "🥈",                // emoji shown in the badge
-      desc:        "Certification demonstrating proficiency in Microsoft Word, Excel, and PowerPoint. Validates skills in document creation, data analysis, and presentation design. Issued by Microsoft",
-      verifyUrl:   "#",                 // ← paste your credential link here
+      issuerIcon:  "🥈",
+      desc:        "Certification demonstrating proficiency in Microsoft Word, Excel, and PowerPoint. Validates skills in document creation, data analysis, and presentation design.",
     },
     {
       date:        "March 2026",
       title:       "Meta certified Digital Marketing Associate",
       issuer:      "Meta",
       issuerIcon:  "🥇",
-      desc:        "CBO certification from Meta, validating foundational digital marketing skills across Facebook, Instagram, and Messenger platforms. Covers campaign creation, audience targeting, and more.",
-      verifyUrl:   "#",
+      desc:        "CBO certification from Meta, validating foundational digital marketing skills across Facebook, Instagram, and Messenger platforms. Covers campaign creation, audience targeting, and analytics.",
     },
-    /* ── HOW TO ADD MORE ──────────────────────────────────
-       Copy the block below, paste it above this comment,
-       and fill in your values. That's it!
-
-    {
-      date:        "Month Year",
-      title:       "Your Certification Title",
-      issuer:      "Issuer Name",
-      issuerIcon:  "🏅",
-      desc:        "Short description of what this certificate covers.",
-      verifyUrl:   "#",
-    },
-    ─────────────────────────────────────────────────── */
   ],
 
   /* ──────────── CONTACT ──────────── */
@@ -474,123 +455,28 @@ function renderEducation() {
 }
 
 /* ─────────── CERTIFICATIONS ─────────── */
+function renderCertifications() {
+  const container = document.getElementById("certifications-list");
 
-/* ────────────────────────────────────────────
-     Modal logic — clean & self-contained
-  ──────────────────────────────────────────── */
-  const modal        = document.getElementById('cert-modal');
-  const modalTitle   = document.getElementById('modal-title');
-  const modalImgWrap = document.getElementById('modal-img-wrap');
-  const modalClose   = document.getElementById('modal-close');
-  const modalCloseBtn= document.getElementById('modal-close-btn');
-  const modalDownload= document.getElementById('modal-download');
-
-  // Elements that had focus before opening (for a11y restore)
-  let previousFocus = null;
-
-  /**
-   * openModal(triggerBtn)
-   * Reads data attributes from the clicked button and
-   * populates + opens the modal.
-   */
-  function openModal(triggerBtn) {
-    const imgSrc  = triggerBtn.getAttribute('data-img');
-    const imgAlt  = triggerBtn.getAttribute('data-img-alt') || 'Certificate image';
-    const title   = triggerBtn.getAttribute('data-title')   || 'Certificate';
-
-    // Update modal content
-    modalTitle.textContent = title;
-
-    if (imgSrc) {
-      // Resolve image path: if it's a relative path (certif1, certif2, etc.),
-      // keep it as-is; if it's a full URL, use it directly
-      const fullImgPath = imgSrc.startsWith('http') ? imgSrc : imgSrc;
-      
-      modalImgWrap.innerHTML = `
-        <img
-          src="${fullImgPath}"
-          alt="${imgAlt}"
-          loading="lazy"
-          onerror="this.parentElement.innerHTML = window.fallbackHTML()"
-        />`;
-      modalDownload.href = fullImgPath;
-      modalDownload.style.display = 'inline-flex';
-    } else {
-      modalImgWrap.innerHTML = fallbackHTML();
-      modalDownload.style.display = 'none';
-    }
-
-    // Open
-    modal.classList.add('open');
-    previousFocus = document.activeElement;
-    modal.focus();
-    document.body.style.overflow = 'hidden';
-  }
-
-  /**
-   * closeModal()
-   * Closes the modal and restores scroll + focus.
-   */
-  function closeModal() {
-    modal.classList.remove('open');
-    document.body.style.overflow = '';
-    if (previousFocus) previousFocus.focus();
-  }
-
-  /**
-   * fallbackHTML()
-   * Returns placeholder markup when no image is available.
-   */
-  function fallbackHTML() {
-    return `
-      <div class="cert-placeholder">
-        <div class="cert-seal">🏅</div>
-        <p><strong>Certificate Preview</strong><br/>
-        Unable to load image. Please check the file path.</p>
-      </div>`;
-  }
-
-  // Expose fallbackHTML globally for onerror attribute
-  window.fallbackHTML = fallbackHTML;
-
-  /* ── Event Listeners ── */
-
-  // Open modal when any "View Certificate" button is clicked
-  document.querySelectorAll('[data-modal="cert-modal"]').forEach(btn => {
-    btn.addEventListener('click', () => openModal(btn));
+  PORTFOLIO_DATA.certifications.forEach(cert => {
+    const item = document.createElement("div");
+    item.className = "cert-item fade-in-section";
+    item.innerHTML = `
+      <div class="cert-top">
+        <div class="cert-logo">${cert.issuerIcon}</div>
+        <div class="cert-info">
+          <h3>${cert.title}</h3>
+          <div class="cert-meta">
+            <span class="cert-issuer">${cert.issuer}</span>
+            <span class="cert-date">${cert.date}</span>
+          </div>
+        </div>
+      </div>
+      <p class="cert-desc">${cert.desc}</p>
+    `;
+    container.appendChild(item);
   });
-
-  // Close via X button
-  modalClose.addEventListener('click', closeModal);
-
-  // Close via footer Close button
-  modalCloseBtn.addEventListener('click', closeModal);
-
-  // Close by clicking outside the modal box (on the overlay)
-  modal.addEventListener('click', e => {
-    if (e.target === modal) closeModal();
-  });
-
-  // Close on Escape key
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-  });
-
-  // Trap focus inside modal while open
-  modal.addEventListener('keydown', e => {
-    if (e.key !== 'Tab') return;
-    const focusable = modal.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const first = focusable[0];
-    const last  = focusable[focusable.length - 1];
-
-    if (e.shiftKey) {
-      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-    } else {
-      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
-    }
-  });
+}
 
 /* ═══════════════════════════════════════════════════════════
    FEATURE: FADE-IN ON SCROLL
@@ -706,7 +592,7 @@ function init() {
   renderProjects();
   renderSkills();
   renderEducation();
-  
+  renderCertifications();
 
   // 2. Activate interactive features
   initScrollAnimations();
